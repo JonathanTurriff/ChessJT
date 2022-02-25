@@ -1,6 +1,22 @@
-<p-menubar [model]="items"> Jawn's Chess Board and AI</p-menubar>
-<div class="row-cols-lg-12">
-    <div id="board1" style="width: 800px" ></div>
+<div class="row" style="background-color: #1e1e1e; padding: 10px">
+
+  <p-menubar [model]="items" [style]="{'border': '0px'}">
+    Jawn's Chess Board and AI
+    <img style="width: 25px; height: 25px; float: right; padding-left: 5px" src="img/chesspieces/wikipedia/wP.png" alt="pawn">
+  </p-menubar>
+</div>
+
+
+<div class="row" style="padding: 15px" >
+  <div class="col-lg-12">
+    <div class="row-cols-lg-12" style="padding:15px">
+      <p-button icon="pi pi-times" (onClick)="clearBoard()" [style]="{'width': '80px'}" >Clear </p-button>
+      <p-button icon="pi pi-sort-alt" (onClick)="flipBoard()" [style]="{'width': '80px', 'margin-left': '10px'}" >Flip </p-button>
+    </div>
+    <div style="padding: 15px; text-align: center">
+        <div id="board1" style="width: 600px" ></div>
+    </div>
+  </div>
 </div>
 
 

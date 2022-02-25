@@ -28,11 +28,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              {
-                "glob": "**/*",
-                "input": "./img",
-                "output": "./node_module/chessboardjs/www/releases/0.3.0/img"
-              }
+              "src/img"
             ],
             "styles": [
               "node_modules/primeng/resources/themes/arya-blue/theme.css",
@@ -45,7 +41,8 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/chessboardjs/www/releases/0.3.0/js/chessboard-0.3.0.js"
+              "node_modules/chessboardjs/www/releases/0.3.0/js/chessboard-0.3.0.js",
+              "node_modules/chess.js/chess.js"
             ]
           },
           "configurations": {

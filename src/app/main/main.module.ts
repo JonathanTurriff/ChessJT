@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MainComponent } from './main.component';
 import {MenubarModule} from "primeng/menubar";
+import {ButtonModule} from "primeng/button";
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import {MenubarModule} from "primeng/menubar";
   imports: [
     BrowserModule,
     MenubarModule,
+    ButtonModule,
   ],
   providers: [],
   exports: [
