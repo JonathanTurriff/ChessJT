@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "0efc13de-5f69-4d5a-8c70-bbd98d84eb6b"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -24,12 +27,26 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./img",
+                "output": "./node_module/chessboardjs/www/releases/0.3.0/img"
+              }
             ],
             "styles": [
+              "node_modules/primeng/resources/themes/arya-blue/theme.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/primeng/resources/primeng.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/chessboardjs/www/releases/0.3.0/css/chessboard-0.3.0.css",
+              "node_modules/chessboardjs/www/releases/0.3.0/css/chessboard-0.3.0.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/chessboardjs/www/releases/0.3.0/js/chessboard-0.3.0.js"
+            ]
           },
           "configurations": {
             "production": {
