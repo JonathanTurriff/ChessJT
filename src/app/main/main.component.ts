@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 declare var ChessBoard: any;
+declare var Chess: any;
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -18,8 +19,6 @@ export class MainComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.board = ChessBoard('board1', {showNotation: true, position: this.ruyLopez, draggable: true})
-    // this.board2 = ChessBoard('board2', {showNotation: true, position: 'start', draggable: true})
     this.items = [
       {
         label: 'Bots',
@@ -31,12 +30,28 @@ export class MainComponent implements OnInit {
       {
         label: 'Settings',
         icon: 'pi pi-cog',
-      }
-      ];
+      }];
+    this.game = new Chess()
+    // console.log(this.game)
+    this.game.fen()
+    this.board = ChessBoard('board1', {showNotation: true, position: 'start', draggable: true})
+    let i = 0
+    while(i<15){
+        const moves = this.game.moves()
+        const move = moves[Math.floor(Math.random()*moves.length)]
+        this.game.move(move)
+        this.board.position(this.game.fen())
+      i++
+    }
+    console.log(this.game.pgn())
+    console.log(this.game.fen())
+    // this.board2 = ChessBoard('board2', {showNotation: true, position: 'start', draggable: true})
+
   }
 
   clearBoard() {
     this.board.clear()
+    this.game.clear()
     this.board.start()
   }
 
