@@ -1,15 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MainComponent } from './main.component';
+import { ChessboardComponent } from './chessboard.component';
 import {MenubarModule} from "primeng/menubar";
 import {ButtonModule} from "primeng/button";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {SplitterModule} from "primeng/splitter";
-import {ChessboardModule} from "../chessboard/chessboard.module";
 
 @NgModule({
   declarations: [
-    MainComponent
+    ChessboardComponent
   ],
   imports: [
     BrowserModule,
@@ -17,12 +16,11 @@ import {ChessboardModule} from "../chessboard/chessboard.module";
     ButtonModule,
     ScrollPanelModule,
     SplitterModule,
-    ChessboardModule,
   ],
   providers: [],
   exports: [
-    MainComponent
+    ChessboardComponent
   ],
-  bootstrap: [MainComponent]
+  bootstrap: [ChessboardComponent]
 })
-export class MainModule { }
+export class ChessboardModule { }

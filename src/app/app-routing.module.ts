@@ -3,15 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 import {MainComponent} from "./main/main.component"; // CLI imports router
 
 const routes: Routes = [
-// {
-//     path: '',
-//     redirectTo: '/main',
-//     pathMatch: 'full',
-//     component: MainComponent
-// },
+{
+    path: '',
+    redirectTo: '/main',
+    pathMatch: 'full',
+},
 {
     path: 'main',
     component: MainComponent
+},
+{
+        path: '**',
+        redirectTo: '/main'
 }
 ]
  // sets up routes constant where you define your routes
