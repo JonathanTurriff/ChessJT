@@ -152,13 +152,14 @@ export class ChessboardComponent implements OnInit {
     let pgn = this.game.pgn().split(' ')
     let moves = []
     for(let move of pgn){
-      if(move.charAt(1) != '.'){
+      if(!move.includes('.')){
         moves.push(move)
       }
     }
     if(moves.length%2 != 0){
       this.moves.push({white: moves[moves.length-1], black: '', whiteMove: '', blackMove: ''});
       this.moves[this.moves.length-1].whiteMove = this.positions.length-1
+
     }else{
       this.moves[this.moves.length-1]['black'] = moves[moves.length-1];
       this.moves[this.moves.length-1].blackMove = this.positions.length-1
@@ -168,7 +169,6 @@ export class ChessboardComponent implements OnInit {
     if(elem){
       elem.scrollTop = elem.scrollHeight
     }
-    // console.log(this.game.is_check())
 
   }
 
