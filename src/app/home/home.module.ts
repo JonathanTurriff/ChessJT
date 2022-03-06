@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MainComponent } from './main.component';
+import { HomeComponent } from './home.component';
 import {MenubarModule} from "primeng/menubar";
 import {ButtonModule} from "primeng/button";
 import {ScrollPanelModule} from "primeng/scrollpanel";
@@ -11,7 +11,7 @@ import {PanelModule} from "primeng/panel";
 
 @NgModule({
   declarations: [
-    MainComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -25,8 +25,8 @@ import {PanelModule} from "primeng/panel";
   ],
   providers: [],
   exports: [
-    MainComponent
+    HomeComponent
   ],
-  bootstrap: [MainComponent]
+  bootstrap: [HomeComponent]
 })
-export class MainModule { }
+export class HomeModule { }

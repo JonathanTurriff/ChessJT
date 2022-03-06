@@ -15,6 +15,11 @@ export class MainComponent implements OnInit {
     //NavBar Setup
     this.items = [
       {
+        label: 'Home',
+        icon: 'pi pi-home',
+        routerLink: ['/home']
+      },
+      {
         label: 'Bots',
         icon: 'pi pi-user',
         items: [
@@ -24,6 +29,11 @@ export class MainComponent implements OnInit {
             routerLink: ['/random_bot']
           }
         ]
+      },
+      {
+        label: 'About',
+        icon: 'pi pi-info-circle',
+        routerLink: ['/about']
       },
       {
         label: 'Settings',

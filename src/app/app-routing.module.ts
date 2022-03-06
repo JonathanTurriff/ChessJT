@@ -1,25 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {MainComponent} from "./main/main.component"; // CLI imports router
+import {MainComponent} from "./main/main.component";
+import {HomeComponent} from "./home/home.component";
+import {ChessboardComponent} from "./chessboard/chessboard.component"; // CLI imports router
 
 const routes: Routes = [
-{
-    path: '',
-    redirectTo: '/main',
-    pathMatch: 'full',
-},
-{
-    path: 'main',
-    component: MainComponent
-},
-{
-        path: '**',
-        redirectTo: '/main'
-}
+  {path: '', redirectTo: '/home', pathMatch: 'full',},
+  {path: 'home', component: HomeComponent},
+  {path: 'settings', component: ChessboardComponent},
+  {path: 'random_bot', component: MainComponent},
+  {path: 'about', component: MainComponent},
+  {path: '**', redirectTo: '/home'}
 ]
- // sets up routes constant where you define your routes
 
-// configures NgModule imports and exports
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

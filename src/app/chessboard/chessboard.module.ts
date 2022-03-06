@@ -5,6 +5,7 @@ import {MenubarModule} from "primeng/menubar";
 import {ButtonModule} from "primeng/button";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {SplitterModule} from "primeng/splitter";
+import {TableModule} from "primeng/table";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {SplitterModule} from "primeng/splitter";
     ButtonModule,
     ScrollPanelModule,
     SplitterModule,
+    TableModule,
   ],
   providers: [],
   exports: [

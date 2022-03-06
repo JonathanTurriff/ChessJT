@@ -14,7 +14,6 @@ import {RouterModule} from "@angular/router";
     AppRoutingModule,
     RouterModule,
     MainModule,
-    // CLI adds AppRoutingModule to the AppModule's imports array
   ],
   providers: [],
   bootstrap: [AppComponent]

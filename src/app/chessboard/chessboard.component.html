@@ -1,25 +1,68 @@
 <div class="row justify-content-center align-self-center" style="align-content: center; align-items: center; align-self: center">
-  <div class="card"  style="background-color: #242526; padding: 15px; width : 1000px" >
+  <div class="card"  style="background-color: #242526; padding: 15px; width : 1300px; height: 906px;" >
+    <div class="row" style="padding-left:100px">
+      <div class="card" style="width: 685px; background-color: #1e1e1e; height: 75px; color: white" >
+        <div class="col-lg-3" style="position:absolute; bottom:15px;">
+<!--          <img style="width: 50px; height: 50px;" src="img/chesspieces/wikipedia/wP.png" alt="pawn">-->
+          <i class="pi pi-android" style="font-size:30px"></i>
+          <span style="font-size: 30px; padding-left: 5px">{{botName}}</span>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
-      <div class="col-lg-8" style="padding: 15px">
-          <div id="board" style="width: 600px" ></div>
+      <div class="col-lg-7" style="padding-left:100px;">
+          <div id="board" style="width: 685px"></div>
       </div>
-      <div class="col-lg-4" style="padding: 15px">
-        <p-scrollPanel  [style]="{width: '100%', height: '600px','max-width': '600px', 'max-height': '600px' , float: 'right', color: 'white', border: '10px', 'border-color': 'white'}">
-          <p-splitter  [style]="{'height': height}" [panelSizes]="[20,80]" [minSizes]="[10,0]" styleClass="mb-5">
-            <ng-template pTemplate>
-            </ng-template>
-          </p-splitter>
-      </p-scrollPanel>
+
+      <div class="col-1 justify-content-center" style="padding-left:35px; align-content: center">
+              <p-button icon="pi pi-undo" (onClick)="clearBoard()"
+                        [style]="{'width': '30px', 'height': '30px', 'background': '#1e1e1e', 'color': 'white', 'border-color': 'black'}" >
+              </p-button>
+        <br>
+              <p-button icon="pi pi-sort-alt" (onClick)="flipBoard()"
+                        [style]="{'width': '30px', 'height': '30px', 'background': '#1e1e1e', 'color': 'white', 'border-color': 'black'}" >
+              </p-button>
       </div>
-      <div class="row-cols-lg-12" style="padding:15px">
-        <p-button icon="pi pi-times" (onClick)="clearBoard()" [style]="{'width': '80px'}" >Clear </p-button>
-        <p-button icon="pi pi-sort-alt" (onClick)="flipBoard()" [style]="{'width': '80px', 'margin-left': '10px'}" >Flip </p-button>
+
+      <div class="col-lg-3" style="max-height:685px">
+        <div style="height: 685px; width: 320px;  background: #1e1e1e ;border: 1px solid black;">
+          <table id=table style="width:100%; color: white">
+            <tr *ngFor="let move of moves; let i=index">
+              <th>{{i+1}}</th>
+              <td (click)="loadMove(move.whiteMove)">{{move.white}}</td>
+              <td (click)="loadMove(move.blackMove)">{{move.black}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-9" style="height: 75px; width: 320px; background: #1e1e1e; border: 1px solid black; justify-content: center"  >
+          <p-button icon="pi pi-angle-double-left" (onClick)="returnToInitialMove()"
+                  [style]="{'width': '50px', 'height': '50px', 'background': '#242526','color': 'white', 'border-color': 'black',
+                   'font-size': '25px', 'margin-left': '55.5px', 'margin-top': '12.5px', 'margin-right': '5px'}">
+          </p-button>
+          <p-button icon="pi pi-angle-left" (onClick)="moveBackwards()"
+                    [style]="{'width': '50px', 'height': '50px', 'background': '#242526', 'color': 'white', 'border-color': 'black',
+                     'font-size': '25px', 'margin-top': '12.5px', 'margin-right': '5px' }">
+          </p-button>
+          <p-button icon="pi pi-angle-right" (onClick)="moveForward()"
+                    [style]="{'width': '50px', 'height': '50px', 'background': '#242526', 'color': 'white', 'border-color': 'black',
+                     'font-size': '25px','margin-top': '12.5px', 'margin-right': '5px'}">
+          </p-button>
+          <p-button icon="pi pi-angle-double-right" (onClick)="returnToCurrentMove()"
+                    [style]="{'width': '50px', 'height': '50px', 'background': '#242526', 'color': 'white', 'border-color': 'black',
+                     'font-size': '25px','margin-top': '12.5px'}">
+          </p-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding-left:100px">
+      <div class="card" style="width: 685px; background-color: #1e1e1e; height: 75px; color: white" >
+        <div class="col-lg-3" style="position:absolute; bottom:15px;">
+          <i class="pi pi-user" style="font-size: 30px"></i>
+          <span style="font-size: 30px; padding-left: 5px">You</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-
-
-

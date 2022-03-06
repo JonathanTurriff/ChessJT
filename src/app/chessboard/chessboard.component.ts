@@ -15,7 +15,11 @@ export class ChessboardComponent implements OnInit {
   whiteSquareGrey = '#a9a9a9';
   blackSquareGrey = '#696969';
   height: any = '600px';
-  moves: any;
+  moves: any = [];
+  positions: any = [];
+  botName: string = 'JawnBot'
+  currentMoves: number = 0;
+  notCurrent: boolean = false;
 
 
 
@@ -38,6 +42,8 @@ export class ChessboardComponent implements OnInit {
     }
     //Create Board for UI
     this.board = ChessBoard('board', config)
+    this.notCurrent = false;
+    this.positions.push(this.game.fen())
   }
 
   /***
@@ -64,6 +70,9 @@ export class ChessboardComponent implements OnInit {
     if(this.game.game_over()){
       return false;
     }
+    if(this.notCurrent){
+      return false;
+    }
     return this.game.turn() == piece.charAt(0);
   }
 
@@ -71,7 +80,7 @@ export class ChessboardComponent implements OnInit {
    * Gets called when a piece gets put down
    * Returns snapback if which returns the piece to its origin if the move is invalid
    */
-  validateMove(source: any, target: any){
+  validateMove(source: any, target: any, piece: any){
     this.removeGreySquares()
 
     // see if the move is legal
@@ -83,7 +92,17 @@ export class ChessboardComponent implements OnInit {
 
     // illegal move
     if (move === null) return 'snapback'
-    this.moves++;
+    let pieceName = piece.substring(1) == 'P'? '' : piece.substring(1)
+    if(piece.charAt(0) == 'w'){
+      this.moves.push({white: pieceName+target, black: '', whiteMove: '', blackMove: ''});
+    }else{
+      this.moves[this.moves.length-1]['black'] = pieceName+target;
+    }
+    let elem = document.getElementById('table');
+    if(elem){
+      elem.scrollTop = elem.scrollHeight
+    }
+    this.currentMoves++;
     this.changeHeight()
     return;
     }
@@ -99,12 +118,15 @@ export class ChessboardComponent implements OnInit {
    * Adds the CSS for the highlighting of grey squares
    **/
   addGreySquares(square: any){
-    let $square = $('#board .square-' + square)
-    let background = this.whiteSquareGrey
-    if($square.hasClass('black-3c85d')){
-      background = this.blackSquareGrey
+    if(!this.notCurrent){
+      let $square = $('#board .square-' + square)
+      let background = this.whiteSquareGrey
+      if($square.hasClass('black-3c85d')){
+        background = this.blackSquareGrey
+      }
+      $square.css('background', background)
     }
-    $square.css('background', background)
+
   }
 
   /**
@@ -137,6 +159,12 @@ export class ChessboardComponent implements OnInit {
    */
   onSnapEnd(){
     this.board.position(this.game.fen())
+    this.positions.push(this.game.fen())
+    if(this.moves[this.moves.length-1].whiteMove ==''){
+      this.moves[this.moves.length-1].whiteMove = this.positions.length-1
+    }else{
+      this.moves[this.moves.length-1].blackMove = this.positions.length-1
+    }
   }
 
   changeHeight(){
@@ -147,6 +175,49 @@ export class ChessboardComponent implements OnInit {
       }
     }
     this.height = base + 'px'
+  }
+
+
+  returnToCurrentMove() {
+    this.currentMoves = this.positions.length
+    this.board.position(this.positions[this.currentMoves-1])
+    this.notCurrent =false;
+  }
+
+  moveForward(){
+    if(this.currentMoves != this.positions.length){
+      this.currentMoves++
+      this.board.position(this.positions[this.currentMoves-1])
+    }else{
+      this.notCurrent = false;
+    }
+
+    this.notCurrent = this.currentMoves != this.positions.length;
+
+  }
+
+  moveBackwards(){
+    if(this.currentMoves > 0){
+      this.notCurrent = true
+      this.currentMoves--
+      this.board.position(this.positions[this.currentMoves-1])
+    }
+    if(this.currentMoves == this.positions.length) this.notCurrent = false;
+
+  }
+  returnToInitialMove() {
+    console.log(this.positions.length)
+    if( !(this.positions.length == 0)  ){
+      this.currentMoves = 1
+      this.board.position(this.positions[this.currentMoves-1])
+      this.notCurrent =true;
+    }
+  }
+
+  loadMove(i: any){
+    this.board.position(this.positions[i])
+    this.notCurrent = i != this.positions.length - 1;
+
   }
 
 }
