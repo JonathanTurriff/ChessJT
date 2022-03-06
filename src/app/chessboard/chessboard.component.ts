@@ -10,6 +10,8 @@ declare var Chess: any;
 })
 
 export class ChessboardComponent implements OnInit {
+
+  //Instance variables
   board: any;
   game: any;
   whiteSquareGrey = '#a9a9a9';
@@ -21,11 +23,16 @@ export class ChessboardComponent implements OnInit {
   currentMoves: number = 0;
   notCurrent: boolean = false;
 
-
-
   constructor() { }
 
   ngOnInit(): void {
+   this.setupBoard()
+  }
+
+  /**
+   * Sets up the board
+   */
+  setupBoard(){
     //Setup Chess logic
     this.game = new Chess()
 
@@ -43,17 +50,11 @@ export class ChessboardComponent implements OnInit {
     //Create Board for UI
     this.board = ChessBoard('board', config)
     this.notCurrent = false;
+    this.positions = []
+    this.moves = []
     this.positions.push(this.game.fen())
   }
 
-  /***
-   * Clears the board and logic and resets the board to initial position
-   */
-  clearBoard() {
-    this.board.clear()
-    this.game.clear()
-    this.board.start()
-  }
 
   /***
    * Flips the board
@@ -82,7 +83,6 @@ export class ChessboardComponent implements OnInit {
    */
   validateMove(source: any, target: any, piece: any){
     this.removeGreySquares()
-
     // see if the move is legal
     let move = this.game.move({
       from: source,
@@ -103,7 +103,6 @@ export class ChessboardComponent implements OnInit {
       elem.scrollTop = elem.scrollHeight
     }
     this.currentMoves++;
-    this.changeHeight()
     return;
     }
 
@@ -167,23 +166,20 @@ export class ChessboardComponent implements OnInit {
     }
   }
 
-  changeHeight(){
-    let base = 600
-    if(this.moves > 30){
-      for(let i = 0; i<this.moves-30; i++){
-        base += 10
-      }
-    }
-    this.height = base + 'px'
-  }
-
-
+  /***
+   * This function gets called when pressing the right most button of the move selector
+   * It returns the board to the correct current move.
+   */
   returnToCurrentMove() {
     this.currentMoves = this.positions.length
     this.board.position(this.positions[this.currentMoves-1])
     this.notCurrent =false;
   }
 
+  /***
+   * This function gets called when pressing the middle right button of the move selector
+   * It positions the board a move forward from the current move.
+   */
   moveForward(){
     if(this.currentMoves != this.positions.length){
       this.currentMoves++
@@ -191,33 +187,44 @@ export class ChessboardComponent implements OnInit {
     }else{
       this.notCurrent = false;
     }
-
     this.notCurrent = this.currentMoves != this.positions.length;
-
   }
 
+  /***
+   * This function gets called when pressing the middle left button of the move selector
+   * It positions the board a move backwards from the current move.
+   */
   moveBackwards(){
     if(this.currentMoves > 0){
       this.notCurrent = true
       this.currentMoves--
       this.board.position(this.positions[this.currentMoves-1])
     }
-    if(this.currentMoves == this.positions.length) this.notCurrent = false;
-
+    if(this.positions.length == 1){
+      this.notCurrent = false;
+    }
   }
+
+  /***
+   * This function gets called when pressing the right most button of the move selector
+   * It returns the board to the first move (starting position).
+   */
   returnToInitialMove() {
-    console.log(this.positions.length)
-    if( !(this.positions.length == 0)  ){
+    if(!(this.positions.length == 1)){
       this.currentMoves = 1
       this.board.position(this.positions[this.currentMoves-1])
       this.notCurrent =true;
     }
   }
 
+  /***
+   * Gets called when the user clicks on the cell containing a move
+   * it sets the position to the one clicked by the user in the table
+   * @param i the index of the move that was selected
+   */
   loadMove(i: any){
     this.board.position(this.positions[i])
     this.notCurrent = i != this.positions.length - 1;
-
   }
 
 }

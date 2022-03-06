@@ -1,5 +1,5 @@
 <div class="row justify-content-center align-self-center" style="align-content: center; align-items: center; align-self: center">
-  <div class="card"  style="background-color: #242526; padding: 15px; width : 1300px; height: 906px;" >
+  <div class="card"  style="background-color: #242526; padding: 15px; width : 1300px; height: 906px; padding-top: 35.5px" >
     <div class="row" style="padding-left:100px">
       <div class="card" style="width: 685px; background-color: #1e1e1e; height: 75px; color: white" >
         <div class="col-lg-3" style="position:absolute; bottom:15px;">
@@ -9,15 +9,13 @@
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="col-lg-7" style="padding-left:100px;">
           <div id="board" style="width: 685px"></div>
       </div>
-
       <div class="col-1 justify-content-center" style="padding-left:35px; align-content: center">
-              <p-button icon="pi pi-undo" (onClick)="clearBoard()"
-                        [style]="{'width': '30px', 'height': '30px', 'background': '#1e1e1e', 'color': 'white', 'border-color': 'black'}" >
+              <p-button icon="pi pi-undo" (onClick)="setupBoard()"
+                        [style]="{'width': '30px', 'height': '30px', 'background': '#1e1e1e', 'color': 'white', 'border-color': 'black', 'margin-bottom': '5px'}" >
               </p-button>
         <br>
               <p-button icon="pi pi-sort-alt" (onClick)="flipBoard()"
@@ -30,8 +28,13 @@
           <table id=table style="width:100%; color: white">
             <tr *ngFor="let move of moves; let i=index">
               <th>{{i+1}}</th>
-              <td (click)="loadMove(move.whiteMove)">{{move.white}}</td>
-              <td (click)="loadMove(move.blackMove)">{{move.black}}</td>
+<!--              *ngIf="this.positions[this.currentMoves] != this.positions[move.whiteMove]"-->
+              <td   (click)="loadMove(move.whiteMove)">{{move.white}}</td>
+<!--              <td  *ngIf="this.positions[this.currentMoves]  == this.positions[move.whiteMove]" (click)="loadMove(move.whiteMove)" style="background: #3A3B3C">{{move.white}}</td>-->
+<!--              *ngIf="this.positions[this.currentMoves]  != this.positions[move.blackMove]"-->
+              <td  (click)="loadMove(move.blackMove)">{{move.black}}</td>
+<!--              <td *ngIf="this.positions[this.currentMoves]  == this.positions[move.blackMove]" (click)="loadMove(move.blackMove)"  style="background: #3A3B3C">{{move.black}}</td>-->
+
             </tr>
           </table>
         </div>
