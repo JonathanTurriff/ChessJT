@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-main',
@@ -8,8 +9,10 @@ import {Component, OnInit} from '@angular/core';
 
 export class HomeComponent implements OnInit {
   items: any;
+  test: any = [1,2,3,4,5,6,7,8,9,0]
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,
+              protected router: Router) {}
 
   ngOnInit(): void {
     //Nav card
@@ -28,4 +31,7 @@ export class HomeComponent implements OnInit {
     ]
   }
 
+  redirectTo(path: string) {
+    this.router.navigate(['../'+path], {relativeTo: this.route});
+  }
 }

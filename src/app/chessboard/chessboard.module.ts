@@ -6,6 +6,8 @@ import {ButtonModule} from "primeng/button";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {SplitterModule} from "primeng/splitter";
 import {TableModule} from "primeng/table";
+import {DialogModule} from "primeng/dialog";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -14,10 +16,12 @@ import {TableModule} from "primeng/table";
   imports: [
     BrowserModule,
     MenubarModule,
+    BrowserAnimationsModule,
     ButtonModule,
     ScrollPanelModule,
     SplitterModule,
     TableModule,
+    DialogModule,
   ],
   providers: [],
   exports: [

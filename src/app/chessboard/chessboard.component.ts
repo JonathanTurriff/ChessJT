@@ -16,12 +16,12 @@ export class ChessboardComponent implements OnInit {
   game: any;
   whiteSquareGrey = '#a9a9a9';
   blackSquareGrey = '#696969';
-  height: any = '600px';
   moves: any = [];
   positions: any = [];
   botName: string = 'JawnBot'
-  currentMoves: number = 0;
+  currentMoves: number = 1;
   notCurrent: boolean = false;
+  promotion: boolean = false;
 
   constructor() { }
 
@@ -50,6 +50,7 @@ export class ChessboardComponent implements OnInit {
     //Create Board for UI
     this.board = ChessBoard('board', config)
     this.notCurrent = false;
+    this.currentMoves = 1
     this.positions = []
     this.moves = []
     this.positions.push(this.game.fen())
@@ -65,7 +66,7 @@ export class ChessboardComponent implements OnInit {
 
   /***
    * Gets called when a piece gets picked up
-   * Returns true if the color of the piece that is being moved coordinates with the color of who's turn it is
+   * Returns true if the color of the piece that is being moved coordinates with the color of whose turn it is
    */
   isTurn(source: any, piece: any){
     if(this.game.game_over()){
@@ -79,9 +80,9 @@ export class ChessboardComponent implements OnInit {
 
   /***
    * Gets called when a piece gets put down
-   * Returns snapback if which returns the piece to its origin if the move is invalid
+   * Returns snap back, which returns the piece to its origin if the move is invalid
    */
-  validateMove(source: any, target: any, piece: any){
+  validateMove(source: any, target: any){
     this.removeGreySquares()
     // see if the move is legal
     let move = this.game.move({
@@ -89,19 +90,8 @@ export class ChessboardComponent implements OnInit {
       to: target,
       promotion: 'q'
     })
-
     // illegal move
     if (move === null) return 'snapback'
-    let pieceName = piece.substring(1) == 'P'? '' : piece.substring(1)
-    if(piece.charAt(0) == 'w'){
-      this.moves.push({white: pieceName+target, black: '', whiteMove: '', blackMove: ''});
-    }else{
-      this.moves[this.moves.length-1]['black'] = pieceName+target;
-    }
-    let elem = document.getElementById('table');
-    if(elem){
-      elem.scrollTop = elem.scrollHeight
-    }
     this.currentMoves++;
     return;
     }
@@ -132,21 +122,21 @@ export class ChessboardComponent implements OnInit {
    * Gets called when hovering a square
    * This function looks for the moves possible of the piece that is hovered and highlights the squares
    **/
-  onMouseoverSquare(square: any, piece: any){
+  onMouseoverSquare(square: any){
     let moves = this.game.moves({
       square: square,
       verbose: true
     })
     if (moves.length === 0) return
     this.addGreySquares(square)
-    for (var i = 0; i < moves.length; i++) {
+    for (let i = 0; i < moves.length; i++) {
       this.addGreySquares(moves[i].to)
     }
   }
 
   /**
-   * Gets called when unhovering a square
-   * This function unhighlights the squares that were highlighted
+   * Gets called when you stop hovering a square
+   * This function turns off the highlight of the squares that were highlighted
    **/
   onMouseoutSquare () {
     this.removeGreySquares()
@@ -159,11 +149,27 @@ export class ChessboardComponent implements OnInit {
   onSnapEnd(){
     this.board.position(this.game.fen())
     this.positions.push(this.game.fen())
-    if(this.moves[this.moves.length-1].whiteMove ==''){
+    let pgn = this.game.pgn().split(' ')
+    let moves = []
+    for(let move of pgn){
+      if(move.charAt(1) != '.'){
+        moves.push(move)
+      }
+    }
+    if(moves.length%2 != 0){
+      this.moves.push({white: moves[moves.length-1], black: '', whiteMove: '', blackMove: ''});
       this.moves[this.moves.length-1].whiteMove = this.positions.length-1
     }else{
+      this.moves[this.moves.length-1]['black'] = moves[moves.length-1];
       this.moves[this.moves.length-1].blackMove = this.positions.length-1
+
     }
+    let elem = document.getElementById('table');
+    if(elem){
+      elem.scrollTop = elem.scrollHeight
+    }
+    // console.log(this.game.is_check())
+
   }
 
   /***
@@ -195,7 +201,7 @@ export class ChessboardComponent implements OnInit {
    * It positions the board a move backwards from the current move.
    */
   moveBackwards(){
-    if(this.currentMoves > 0){
+    if(this.currentMoves > 1){
       this.notCurrent = true
       this.currentMoves--
       this.board.position(this.positions[this.currentMoves-1])
@@ -224,7 +230,7 @@ export class ChessboardComponent implements OnInit {
    */
   loadMove(i: any){
     this.board.position(this.positions[i])
+    this.currentMoves = i+1;
     this.notCurrent = i != this.positions.length - 1;
   }
-
 }

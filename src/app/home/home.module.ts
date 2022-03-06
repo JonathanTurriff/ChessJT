@@ -8,6 +8,7 @@ import {SplitterModule} from "primeng/splitter";
 import {ChessboardModule} from "../chessboard/chessboard.module";
 import {CardModule} from "primeng/card";
 import {PanelModule} from "primeng/panel";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {PanelModule} from "primeng/panel";
     ChessboardModule,
     CardModule,
     PanelModule,
+    DialogModule,
   ],
   providers: [],
   exports: [

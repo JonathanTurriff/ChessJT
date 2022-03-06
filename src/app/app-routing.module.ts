@@ -7,8 +7,9 @@ import {ChessboardComponent} from "./chessboard/chessboard.component"; // CLI im
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full',},
   {path: 'home', component: HomeComponent},
-  {path: 'settings', component: ChessboardComponent},
-  {path: 'random_bot', component: MainComponent},
+  {path: 'settings', component: HomeComponent},
+  {path: 'chessboard', component: ChessboardComponent},
+  {path: 'random_bot', component: ChessboardComponent},
   {path: 'about', component: MainComponent},
   {path: '**', redirectTo: '/home'}
 ]

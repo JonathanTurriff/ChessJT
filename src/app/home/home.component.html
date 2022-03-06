@@ -1,7 +1,7 @@
 <div class="row justify-content-center align-self-center" style="align-content: center; align-items: center; align-self: center">
-  <div class="card justify-content-between" style="background-color: #242526; padding: 15px; width : 1500px; height:867px" >
-
-    <div class="card" style="width: 18rem;" routerLink="../rando_bot">
+  <div class="card" style="background-color: #242526; padding: 15px; width : 1500px; height:906px" >
+    <div class="col-lg-8">
+      <div class="card" style="width: 18rem;" (click)="redirectTo('random_bot')">
       <div class="card-body">
         <h5 class="card-title">
           <i class="pi pi-android"></i>
@@ -10,5 +10,17 @@
         <p class="card-text">This bot will play random moves in response to your moves.</p>
       </div>
     </div>
+      <br>
+    <div class="card" style="width: 18rem;" (click)="redirectTo('chessboard')">
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="pi pi-user"></i>
+          Play by Yourself
+        </h5>
+        <p class="card-text">This is a great way to practice openings or simulate Puzzles</p>
+      </div>
+    </div>
+    </div>
   </div>
 </div>
+
