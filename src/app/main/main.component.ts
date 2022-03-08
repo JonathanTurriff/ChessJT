@@ -20,8 +20,13 @@ export class MainComponent implements OnInit {
         routerLink: ['/home']
       },
       {
-        label: 'Bots',
+        label: 'Play by Yourself',
         icon: 'pi pi-user',
+        routerLink: ['/home']
+      },
+      {
+        label: 'Bots',
+        icon: 'pi pi-android',
         items: [
           {
             label: 'RandomBot',

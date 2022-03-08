@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-homepage',
+  templateUrl: './homepage.component.html',
+  styleUrls: ['./homepage.component.css']
 })
-
-export class HomeComponent implements OnInit {
+export class HomepageComponent implements OnInit {
   items: any;
   test: any = [1,2,3,4,5,6,7,8,9,0]
 
