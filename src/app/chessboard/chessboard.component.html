@@ -1,10 +1,10 @@
 <div class="row justify-content-center align-self-center" style="align-content: center; align-items: center; align-self: center">
   <div class="card"  style="background-color: #242526; padding: 15px; width : 1300px; height: 906px; padding-top: 35.5px" >
-    <div class="row" style="padding-left:100px">
+    <div *ngIf="loaded" class="row" style="padding-left:100px">
       <div class="card" style="width: 685px; background-color: #1e1e1e; height: 75px; color: white" >
-        <div class="col-lg-3" style="position:absolute; bottom:15px;">
-<!--          <img style="width: 50px; height: 50px;" src="img/chesspieces/wikipedia/wP.png" alt="pawn">-->
-          <i class="pi pi-android" style="font-size:30px"></i>
+        <div class="col-lg-4" style="position:absolute; bottom:15px;">
+          <i *ngIf="botName != 'Opponent'" class="pi pi-android" style="font-size:30px"></i>
+          <i *ngIf="botName == 'Opponent'" class="pi pi-user" style="font-size:30px"></i>
           <span style="font-size: 30px; padding-left: 5px">{{botName}}</span>
         </div>
       </div>
@@ -77,5 +77,10 @@
   <img *ngIf="game.turn() =='b'" style="width: 60px; height: 60px;" src="img/chesspieces/wikipedia/bN.png" alt="BKnight">
   <img *ngIf="game.turn() =='b'" style="width: 60px; height: 60px;" src="img/chesspieces/wikipedia/bB.png" alt="BBishop">
   <img *ngIf="game.turn() =='b'" style="width: 60px; height: 60px;" src="img/chesspieces/wikipedia/bR.png" alt="BRook">
+</p-dialog>
+
+<p-dialog header="Select A color:" [(visible)]="pickColor" [style]="{width: '150'}">
+    <img (click)="selectColor('w')" style="width: 60px; height: 60px;margin-left: 20px" src="img/chesspieces/wikipedia/wK.png" alt="WKing">
+    <img (click)="selectColor('b')" style="width: 60px; height: 60px;" src="img/chesspieces/wikipedia/bK.png" alt="BKing">
 </p-dialog>
 

@@ -22,7 +22,7 @@ export class MainComponent implements OnInit {
       {
         label: 'Play by Yourself',
         icon: 'pi pi-user',
-        routerLink: ['/home']
+        routerLink: ['/chessboard']
       },
       {
         label: 'Bots',

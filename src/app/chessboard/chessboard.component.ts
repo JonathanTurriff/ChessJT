@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as $ from 'jquery'
 
 declare var ChessBoard: any;
@@ -18,10 +18,16 @@ export class ChessboardComponent implements OnInit {
   blackSquareGrey = '#696969';
   moves: any = [];
   positions: any = [];
-  botName: string = 'JawnBot'
+  @Input()
+  pickColor: boolean = false;
+  @Input()
+  botName: string = 'Opponent'
   currentMoves: number = 1;
   notCurrent: boolean = false;
   promotion: boolean = false;
+  loaded: boolean = false;
+  @Input()
+  playerColor = 'wb';
 
   constructor() { }
 
@@ -33,9 +39,9 @@ export class ChessboardComponent implements OnInit {
    * Sets up the board
    */
   setupBoard(){
+    this.loaded=false
     //Setup Chess logic
     this.game = new Chess()
-
     //Setup ChessBoard
     let config = {
       showNotation: true,
@@ -54,6 +60,7 @@ export class ChessboardComponent implements OnInit {
     this.positions = []
     this.moves = []
     this.positions.push(this.game.fen())
+    this.loaded = true
   }
 
 
@@ -75,7 +82,11 @@ export class ChessboardComponent implements OnInit {
     if(this.notCurrent){
       return false;
     }
-    return this.game.turn() == piece.charAt(0);
+    // if(piece.charAt(0) != this.playerColor){
+    //   return false;
+    // }
+    console.log(this.playerColor)
+    return this.game.turn() == piece.charAt(0) && this.playerColor.includes(piece.charAt(0));
   }
 
   /***
@@ -107,7 +118,7 @@ export class ChessboardComponent implements OnInit {
    * Adds the CSS for the highlighting of grey squares
    **/
   addGreySquares(square: any){
-    if(!this.notCurrent){
+    if(!this.notCurrent && this.playerColor.includes(this.game.turn())){
       let $square = $('#board .square-' + square)
       let background = this.whiteSquareGrey
       if($square.hasClass('black-3c85d')){
@@ -232,5 +243,13 @@ export class ChessboardComponent implements OnInit {
     this.board.position(this.positions[i])
     this.currentMoves = i+1;
     this.notCurrent = i != this.positions.length - 1;
+  }
+
+  selectColor(color: string) {
+    this.playerColor=color;
+    if(this.playerColor == 'b'){
+      this.flipBoard()
+    }
+    this.pickColor = false;
   }
 }

@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RandombotComponent implements OnInit {
 
+  loaded = false;
   constructor() { }
 
   ngOnInit(): void {
+    setTimeout( ()=>{
+          this.loaded = true
+      }, 300
+    )
   }
 
 }
