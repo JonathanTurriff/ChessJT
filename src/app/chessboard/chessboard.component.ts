@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import * as $ from 'jquery'
 
 declare var ChessBoard: any;
@@ -18,16 +18,18 @@ export class ChessboardComponent implements OnInit {
   blackSquareGrey = '#696969';
   moves: any = [];
   positions: any = [];
-  @Input()
-  pickColor: boolean = false;
-  @Input()
-  botName: string = 'Opponent'
+  @Input() pickColor: boolean = false;
+  @Input() botName: string = 'Opponent'
+  @Input() playerColor = 'wb';
+  @Input() incomingMove: any;
+  @Output() moveRequest = new EventEmitter<any>();
   currentMoves: number = 1;
   notCurrent: boolean = false;
   promotion: boolean = false;
   loaded: boolean = false;
-  @Input()
-  playerColor = 'wb';
+  isPromoting: any;
+  source: any;
+  target: any;
 
   constructor() { }
 
@@ -85,7 +87,6 @@ export class ChessboardComponent implements OnInit {
     // if(piece.charAt(0) != this.playerColor){
     //   return false;
     // }
-    console.log(this.playerColor)
     return this.game.turn() == piece.charAt(0) && this.playerColor.includes(piece.charAt(0));
   }
 
@@ -93,13 +94,19 @@ export class ChessboardComponent implements OnInit {
    * Gets called when a piece gets put down
    * Returns snap back, which returns the piece to its origin if the move is invalid
    */
-  validateMove(source: any, target: any){
+  validateMove(source: any, target: any, piece: any){
     this.removeGreySquares()
     // see if the move is legal
+    if(piece.charAt(1) == 'P' && (target.includes(8) || target.includes(1))){
+      this.promotion = true;
+      this.source = source
+      this.target = target
+      this.isPromoting = true
+      return;
+    }
     let move = this.game.move({
       from: source,
       to: target,
-      promotion: 'q'
     })
     // illegal move
     if (move === null) return 'snapback'
@@ -155,9 +162,13 @@ export class ChessboardComponent implements OnInit {
 
   /**
    * Gets called when dropping a piece, after validation.
-   * Loads the position on the board
+   * Loads the position on the board and logs the position
    */
   onSnapEnd(){
+    if(this.isPromoting){
+      this.isPromoting = false
+      return
+    }
     this.board.position(this.game.fen())
     this.positions.push(this.game.fen())
     let pgn = this.game.pgn().split(' ')
@@ -174,13 +185,15 @@ export class ChessboardComponent implements OnInit {
     }else{
       this.moves[this.moves.length-1]['black'] = moves[moves.length-1];
       this.moves[this.moves.length-1].blackMove = this.positions.length-1
-
     }
+
     let elem = document.getElementById('table');
     if(elem){
       elem.scrollTop = elem.scrollHeight
     }
-
+    if(((this.playerColor == 'b' && this.game.turn() == 'w') || (this.playerColor == 'w' && this.game.turn() == 'b') )){
+      this.requestMove()
+    }
   }
 
   /***
@@ -245,11 +258,36 @@ export class ChessboardComponent implements OnInit {
     this.notCurrent = i != this.positions.length - 1;
   }
 
+  promotionSelect(piece: string){
+    this.game.move({
+      from: this.source,
+      to: this.target,
+      promotion: piece
+    })
+    this.currentMoves++;
+    this.onSnapEnd()
+    this.promotion = false;
+  }
+
   selectColor(color: string) {
     this.playerColor=color;
     if(this.playerColor == 'b'){
       this.flipBoard()
+      this.requestMove()
     }
     this.pickColor = false;
+  }
+
+  requestMove(){
+    this.moveRequest.emit(this.game)
+  }
+
+  ngOnChanges(){
+    if(this.incomingMove){
+      this.game.move(this.incomingMove)
+      this.currentMoves++
+      this.onSnapEnd()
+    }
+
   }
 }

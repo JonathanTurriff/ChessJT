@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-randombot',
@@ -8,13 +8,19 @@ import { Component, OnInit } from '@angular/core';
 export class RandombotComponent implements OnInit {
 
   loaded = false;
+  incomingMove: any;
   constructor() { }
 
   ngOnInit(): void {
     setTimeout( ()=>{
           this.loaded = true
-      }, 300
+      }, 100
     )
   }
 
+  moveRequested($event: any) {
+    let moves = $event.moves()
+    let index = Math.floor(Math.random() * moves.length)
+    this.incomingMove = moves[index]
+  }
 }

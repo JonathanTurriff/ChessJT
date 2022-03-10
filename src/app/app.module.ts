@@ -9,12 +9,14 @@ import { RandombotComponent } from './randombot/randombot.component';
 import {ChessboardModule} from "./chessboard/chessboard.module";
 import { HomepageComponent } from './homepage/homepage.component';
 import {CardModule} from "primeng/card";
+import { SandboxComponent } from './sandbox/sandbox.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RandombotComponent,
-    HomepageComponent
+    HomepageComponent,
+    SandboxComponent
   ],
   imports: [
     BrowserModule,
