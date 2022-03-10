@@ -16,6 +16,8 @@ export class ChessboardComponent implements OnInit {
   game: any;
   whiteSquareGrey = '#a9a9a9';
   blackSquareGrey = '#696969';
+  whiteSquareRed = '#FF7F7F';
+  blackSquareRed = '#FF6863';
   moves: any = [];
   positions: any = [];
   @Input() pickColor: boolean = false;
@@ -78,15 +80,9 @@ export class ChessboardComponent implements OnInit {
    * Returns true if the color of the piece that is being moved coordinates with the color of whose turn it is
    */
   isTurn(source: any, piece: any){
-    if(this.game.game_over()){
+    if(this.game.game_over() || this.notCurrent || this.pickColor){
       return false;
     }
-    if(this.notCurrent){
-      return false;
-    }
-    // if(piece.charAt(0) != this.playerColor){
-    //   return false;
-    // }
     return this.game.turn() == piece.charAt(0) && this.playerColor.includes(piece.charAt(0));
   }
 
@@ -95,7 +91,7 @@ export class ChessboardComponent implements OnInit {
    * Returns snap back, which returns the piece to its origin if the move is invalid
    */
   validateMove(source: any, target: any, piece: any){
-    this.removeGreySquares()
+    this.removeSquares()
     // see if the move is legal
     if(piece.charAt(1) == 'P' && (target.includes(8) || target.includes(1))){
       this.promotion = true;
@@ -118,18 +114,60 @@ export class ChessboardComponent implements OnInit {
    * Removes the CSS for the highlighting of grey squares
    **/
   removeGreySquares(){
+    let x = $('#board .square-55d63')
+    for(let square of x){
+      if(square.getAttribute('style') != null){
+        // console.log(square)
+        let style = square.getAttribute('style')
+        // @ts-ignore
+        if(style.includes("rgb(105, 105, 105)")){
+          // @ts-ignore
+          square.setAttribute('style', style.replace('background: rgb(105, 105, 105);', ''))
+        // @ts-ignore
+        }else if(style.includes("rgb(169, 169, 169)")){
+          // @ts-ignore
+          square.setAttribute('style', style.replace('background: rgb(169, 169, 169);', ''))
+
+        }
+      }
+    }
+  }
+
+  /**
+   * Removes the CSS for the highlighting of all squares
+   **/
+  removeSquares(){
     $('#board .square-55d63').css('background', '')
+
   }
 
   /**
    * Adds the CSS for the highlighting of grey squares
    **/
   addGreySquares(square: any){
-    if(!this.notCurrent && this.playerColor.includes(this.game.turn())){
+    if(!this.notCurrent && this.playerColor.includes(this.game.turn()) && !this.pickColor){
       let $square = $('#board .square-' + square)
-      let background = this.whiteSquareGrey
+      let x = $square.css('background')
+      if($square.css('background').includes('rgb(181, 136, 99)') || $square.css('background').includes('rgb(240, 217, 181)')  ){
+        let background = this.whiteSquareGrey
+        if($square.hasClass('black-3c85d')){
+          background = this.blackSquareGrey
+        }
+        $square.css('background', background)
+      }
+
+    }
+
+  }
+  /**
+   * Adds the CSS for the highlighting of grey squares
+   **/
+  addRedSquares(square: any){
+    if(!this.notCurrent && this.playerColor.includes(this.game.turn()) && !this.pickColor){
+      let $square = $('#board .square-' + square)
+      let background = this.whiteSquareRed
       if($square.hasClass('black-3c85d')){
-        background = this.blackSquareGrey
+        background = this.blackSquareRed
       }
       $square.css('background', background)
     }
@@ -141,6 +179,7 @@ export class ChessboardComponent implements OnInit {
    * This function looks for the moves possible of the piece that is hovered and highlights the squares
    **/
   onMouseoverSquare(square: any){
+
     let moves = this.game.moves({
       square: square,
       verbose: true
@@ -179,20 +218,44 @@ export class ChessboardComponent implements OnInit {
       }
     }
     if(moves.length%2 != 0){
+      console.log('yes')
       this.moves.push({white: moves[moves.length-1], black: '', whiteMove: '', blackMove: ''});
       this.moves[this.moves.length-1].whiteMove = this.positions.length-1
 
     }else{
+      console.log('no')
       this.moves[this.moves.length-1]['black'] = moves[moves.length-1];
       this.moves[this.moves.length-1].blackMove = this.positions.length-1
     }
-
+    console.log(this.moves)
     let elem = document.getElementById('table');
     if(elem){
       elem.scrollTop = elem.scrollHeight
     }
     if(((this.playerColor == 'b' && this.game.turn() == 'w') || (this.playerColor == 'w' && this.game.turn() == 'b') )){
       this.requestMove()
+    }
+    if(this.game.in_check()){
+      let position = this.board.position()
+      for(let pos of Object.keys(position)){
+        if(position[pos] == this.game.turn()+'K'){
+          this.addRedSquares(pos)
+        }
+      }
+    }
+
+    if(this.game.game_over()){
+      if(this.game.in_checkmate()){
+
+      }else if(this.game.in_draw()){
+
+      }else if(this.game.in_stalemate()){
+
+      }else if(this.game.in_threefold_repetition()){
+
+      }else if(this.game.insufficient_material()){
+
+      }
     }
   }
 
@@ -258,17 +321,27 @@ export class ChessboardComponent implements OnInit {
     this.notCurrent = i != this.positions.length - 1;
   }
 
+  /***
+   * Called when clicking on a piece in the promotion dialog
+   * @param piece piece passed by the dialog
+   */
   promotionSelect(piece: string){
-    this.game.move({
+    let move = this.game.move({
       from: this.source,
       to: this.target,
       promotion: piece
     })
-    this.currentMoves++;
-    this.onSnapEnd()
-    this.promotion = false;
+    if(move){
+      this.currentMoves++;
+      this.onSnapEnd()
+      this.promotion = false
+    }
   }
 
+  /**
+   * called when picking color from p-dialog
+   * @param color passed by the dialog
+   */
   selectColor(color: string) {
     this.playerColor=color;
     if(this.playerColor == 'b'){
@@ -278,16 +351,23 @@ export class ChessboardComponent implements OnInit {
     this.pickColor = false;
   }
 
+  /***
+   * Sends an EventEmitter to the parent component requesting a move,
+   * called when the player plays their move or if the user picks black
+   */
   requestMove(){
     this.moveRequest.emit(this.game)
   }
 
+  /***
+   * Gets called when a parent passes it a new value for an input
+   * This one checks if its null and plays the move given by the parent component
+   */
   ngOnChanges(){
     if(this.incomingMove){
       this.game.move(this.incomingMove)
       this.currentMoves++
       this.onSnapEnd()
     }
-
   }
 }
