@@ -84,3 +84,10 @@
     <img (click)="selectColor('b')" style="width: 60px; height: 60px;" src="img/chesspieces/wikipedia/bK.png" alt="BKing">
 </p-dialog>
 
+<p-dialog header="{{message}}" [(visible)]="gameOver" [style]="{width: '350px'}">
+  <p-button icon="pi pi-undo" (onClick)="setupBoard()"
+                        [style]="{'width': '90px', 'height': '35px', 'background': '#3A3B3C', 'color': 'white', 'border-color': 'black', 'margin-bottom': '5px','margin-left': '105px'}" > Restart
+  </p-button>
+
+</p-dialog>
+

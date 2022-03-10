@@ -32,6 +32,8 @@ export class ChessboardComponent implements OnInit {
   isPromoting: any;
   source: any;
   target: any;
+  gameOver: boolean = false;
+  message: string = '';
 
   constructor() { }
 
@@ -44,6 +46,7 @@ export class ChessboardComponent implements OnInit {
    */
   setupBoard(){
     this.loaded=false
+    this.gameOver = false
     //Setup Chess logic
     this.game = new Chess()
     //Setup ChessBoard
@@ -117,7 +120,6 @@ export class ChessboardComponent implements OnInit {
     let x = $('#board .square-55d63')
     for(let square of x){
       if(square.getAttribute('style') != null){
-        // console.log(square)
         let style = square.getAttribute('style')
         // @ts-ignore
         if(style.includes("rgb(105, 105, 105)")){
@@ -218,16 +220,13 @@ export class ChessboardComponent implements OnInit {
       }
     }
     if(moves.length%2 != 0){
-      console.log('yes')
       this.moves.push({white: moves[moves.length-1], black: '', whiteMove: '', blackMove: ''});
       this.moves[this.moves.length-1].whiteMove = this.positions.length-1
 
     }else{
-      console.log('no')
       this.moves[this.moves.length-1]['black'] = moves[moves.length-1];
       this.moves[this.moves.length-1].blackMove = this.positions.length-1
     }
-    console.log(this.moves)
     let elem = document.getElementById('table');
     if(elem){
       elem.scrollTop = elem.scrollHeight
@@ -245,17 +244,29 @@ export class ChessboardComponent implements OnInit {
     }
 
     if(this.game.game_over()){
+
       if(this.game.in_checkmate()){
-
+        if((this.game.turn() == 'w' && this.playerColor == 'b') || (this.game.turn() == 'b' && this.playerColor == 'w')){
+          this.message = 'You Win!'
+        } else if((this.game.turn() == 'b' && this.playerColor == 'b') || (this.game.turn() == 'w' && this.playerColor == 'w')){
+          this.message = 'You Lose!'
+        }else{
+          if(this.game.turn() == 'w'){
+            this.message = 'Black Wins!'
+          }else{
+            this.message = 'White Wins!'
+          }
+        }
       }else if(this.game.in_draw()){
-
-      }else if(this.game.in_stalemate()){
-
-      }else if(this.game.in_threefold_repetition()){
-
-      }else if(this.game.insufficient_material()){
-
+        if(this.game.in_stalemate()){
+          this.message = 'Draw by stalemate'
+        }else if(this.game.in_threefold_repetition()){
+          this.message = 'Draw by repetition'
+        }else if(this.game.insufficient_material()){
+          this.message = 'Draw by insufficient material'
+        }
       }
+      this.gameOver = true;
     }
   }
 
