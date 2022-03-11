@@ -19,12 +19,14 @@ export class HomepageComponent implements OnInit {
     this.items = [
       {
         label: 'Play Alone',
+        value: false,
         info: 'Just a default chess board. Useful for studying positions or simulating puzzles',
         routerLink: ['/home']
       },
 
       {
         label: 'RandoBot',
+        value: true,
         info: 'This bot will play random moves in response to your moves.',
         routerLink: ['/about']
       },

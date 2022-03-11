@@ -10,13 +10,17 @@ import {ChessboardModule} from "./chessboard/chessboard.module";
 import { HomepageComponent } from './homepage/homepage.component';
 import {CardModule} from "primeng/card";
 import { SandboxComponent } from './sandbox/sandbox.component';
+import { AboutComponent } from './about/about.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RandombotComponent,
     HomepageComponent,
-    SandboxComponent
+    SandboxComponent,
+    AboutComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

@@ -79,8 +79,8 @@
   <img *ngIf="game.turn() =='b'" (click)="promotionSelect('r')" style="width: 60px; height: 60px;" src="img/chesspieces/wikipedia/bR.png" alt="BRook">
 </p-dialog>
 
-<p-dialog header="Select A color:" [(visible)]="pickColor" [style]="{width: '150'}">
-    <img (click)="selectColor('w')" style="width: 60px; height: 60px;margin-left: 20px" src="img/chesspieces/wikipedia/wK.png" alt="WKing">
+<p-dialog header="Select a color:" [(visible)]="pickColor" [style]="{width: '250px'}">
+    <img (click)="selectColor('w')" style="width: 60px; height: 60px;margin-left: 40px" src="img/chesspieces/wikipedia/wK.png" alt="WKing">
     <img (click)="selectColor('b')" style="width: 60px; height: 60px;" src="img/chesspieces/wikipedia/bK.png" alt="BKing">
 </p-dialog>
 

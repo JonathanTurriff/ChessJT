@@ -45,6 +45,9 @@ export class ChessboardComponent implements OnInit {
    * Sets up the board
    */
   setupBoard(){
+    if(this.botName != "Opponent"){
+      this.pickColor = true
+    }
     this.loaded=false
     this.gameOver = false
     //Setup Chess logic
